@@ -6,8 +6,6 @@ import Link from 'next/link';
 
 
 export default function Header() {
-
-    const { data: session } = useSession();
     const router = useRouter();
     const { pathname } = router;
 
@@ -93,21 +91,21 @@ export default function Header() {
 
                         <div className="flex items-center gap-4">
                             <div className="sm:flex sm:gap-4">
-                                <a
+                                {/* <a
                                     className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow"
                                     href="#"
                                 >
                                     Login
-                                </a>
+                                </a> */}
 
-                                <div className="hidden sm:flex">
+                                {/* <div className="hidden sm:flex">
                                     <a
                                         className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600"
                                         href="#"
                                     >
                                         Register
                                     </a>
-                                </div>
+                                </div> */}
                             </div>
                             <div class="h-10 w-10">
                                 <img class="h-full w-full rounded-full object-cover object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Logo" />

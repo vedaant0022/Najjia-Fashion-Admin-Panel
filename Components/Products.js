@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
-
+import { useHref } from 'react-router-dom';
+import { redirect } from 'next/navigation';
 
 
 function Products() {
     const router = useRouter();
 
+    
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -18,8 +20,10 @@ function Products() {
     const [gender, setgender] = useState('');
     const [images, setImages] = useState([]);
     const [category, setcategory] = useState([]);
+    
 
-    const Submit = () => {
+    const Submit = (event) => {
+        event.preventDefault()
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -45,7 +49,12 @@ function Products() {
 
         fetch("http://localhost:8000/products", requestOptions)
             .then((response) => response.json())
-            .then((result) => console.log(result))
+            .then((result) =>{ 
+                console.log('sdf')
+
+                router.push('/products')
+                console.log(result)
+            })
             .catch((error) => console.error(error));
 
     };
@@ -78,8 +87,10 @@ function Products() {
                         onChange={(ev) => setcategory(ev.target.value)}
                     >
                         <option value="0">No category selected</option>
-                        <option value="1">Option 2</option>
-                        <option value="2">Option 3</option>
+                        <option value="Tshirts">Tshirts</option>
+                        <option value="Jeans">Jeans</option>
+                        <option value="Wallets">Wallets</option>
+                        <option value="Shoes">Shoes</option>
 
                     </select>
                 </div>
@@ -138,7 +149,7 @@ function Products() {
                         <label>Brand</label>
                         <input
                             className="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                            placeholder="brand name"
+                            placeholder="Brand Name"
                             type="text"
                             value={brand}
                             onChange={ev => setbrand(ev.target.value)}
@@ -153,8 +164,8 @@ function Products() {
                             onChange={(ev) => setgender(ev.target.value)}
                         >
                             <option value="0">Select Gender</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
 
                         </select>
                     </div>
@@ -170,22 +181,22 @@ function Products() {
                             onChange={(ev) => setsize(ev.target.value)}
                         >
                             <option value="0">Select Size</option>
-                            <option value="1">XS</option>
-                            <option value="2">S</option>
-                            <option value="3">M</option>
-                            <option value="4">L</option>
-                            <option value="5">XL</option>
-                            <option value="6">XXL</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
 
 
                         </select>
                     </div>
 
-                    <div>
+                    <div >
                         <label>Color Options</label>
                         <input
                             className="w-full rounded-lg border border-gray-200 p-3 text-sm"
-                            placeholder="colors"
+                            placeholder="Color"
                             type="text"
                             value={color}
                             onChange={ev => setcolor(ev.target.value)}
@@ -210,7 +221,7 @@ function Products() {
                 <div className="items-center my-4 justify-center">
                     <div className="col-span-2 col-start-2">
                         <button
-                            // onSubmit={handleSubmit} 
+                            onSubmit={Submit} 
                             className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
                         >
                             Save Product

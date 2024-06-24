@@ -1,12 +1,16 @@
 
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { getproduct } from '../api/API';
 import axios from 'axios';
+
 
 export default function index() {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentProduct, setCurrentProduct] = useState(null);
+
+
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -40,6 +44,66 @@ export default function index() {
     if (error) {
         return <div className='w-screen h-screen bg-white'>Error: {error.message}</div>;
     }
+
+    const deleteProduct = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/products/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete product');
+            }
+
+            const data = await response.json();
+            console.log('Product deleted:', data);
+            // Update the product list after deletion
+            setProducts(products.filter(product => product._id !== id));
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            setError(error);
+        }
+    };
+
+    const updateProduct = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(products),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update product');
+            }
+
+            const updatedProduct = await response.json();
+            console.log('Product updated:', updatedProduct);
+            setProducts(products.map(p => (p._id === updatedProduct._id ? updatedProduct : p)));
+            setIsEditing(false);
+            setCurrentProduct(null);
+        } catch (error) {
+            console.error('Error updating product:', error);
+            setError(error);
+        }
+    };
+
+    const handleEditClick = (product) => {
+        setCurrentProduct(product);
+        setIsEditing(true);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCurrentProduct({ ...currentProduct, [name]: value });
+    };
+
+    const handleUpdateSubmit = (e) => {
+        e.preventDefault();
+        updateProduct(currentProduct);
+    };
     return (
         <div className='w-screen h-screen bg-white'>
             <div className='px-4'>
@@ -76,12 +140,68 @@ export default function index() {
                 <hr class="my-1 h-px border-0 bg-gray-300" />
                 {/* Products */}
                 <div>
-                    {products.map(product => (
-                        <div>
-                            <p>{product.title}</p>
-                        </div>
-                        
-                    ))}
+
+                    <div>
+                        {products.length === 0 ? (
+                            <p>No Products Found</p>
+                        ) : (
+
+
+                            <div class="ml-5 mr-5">
+                                <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Description</th>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Category</th>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                                        {products.map(product => (
+                                            <tr>
+                                                {/* <img src={product.images} style={{height:'25px', width:'25px'}}/> */}
+                                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                    <img src={product.images} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
+                                                    <th class="px-6 py-4 font-medium text-gray-900">{product.title}</th>
+                                                </div>
+                                                <td class="px-6 py-4">{product.description}</td>
+                                                <td class="px-6 py-4">{product.price}</td>
+                                                <td class="px-6 py-4">{product.category}</td>
+
+                                                <div style={{ display: 'flex', flexDirection: 'row', gap: 25 }}>
+                                                    <div className='mt-3 '>
+                                                        <button class="flex  gap-4 px-6 py-4 font-medium bg-green-500 text-white border-green-500 rounded-xl h-5" 
+                                                         
+                                                        >
+                                                       
+                                                            <p style={{ justifyContent: 'center', justifyItems: 'center', marginTop: '-10px' }}>Edit</p>
+                                                        </button>
+                                                    </div>
+                                                    <div className='mt-3 '>
+                                                        <button
+
+                                                            onClick={() => deleteProduct(product._id.toString())}
+                                                            class="flex  gap-4 px-6 py-4 font-medium bg-red-500 text-white border-red-500 rounded-xl h-5"   >
+                                                            <p style={{ justifyContent: 'center', justifyItems: 'center', marginTop: '-10px' }}>Delete</p>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                        ))}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        )}
+                    </div>
+
+
                 </div>
 
 
@@ -93,8 +213,3 @@ export default function index() {
         </div>
     )
 }
-// {products.length === 0 ? (
-//     <p>No Products Found</p>
-// ):(
-//     <p>There are some products</p>
-// )}
