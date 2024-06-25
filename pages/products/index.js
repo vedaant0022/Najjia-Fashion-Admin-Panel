@@ -2,9 +2,14 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import Router, { useRouter } from 'next/router';
 
 
 export default function index() {
+
+    const router = useRouter();
+
+
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
@@ -65,45 +70,10 @@ export default function index() {
         }
     };
 
-    const updateProduct = async (id) => {
-        try {
-            const response = await fetch(`http://localhost:8000/products/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(products),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update product');
-            }
-
-            const updatedProduct = await response.json();
-            console.log('Product updated:', updatedProduct);
-            setProducts(products.map(p => (p._id === updatedProduct._id ? updatedProduct : p)));
-            setIsEditing(false);
-            setCurrentProduct(null);
-        } catch (error) {
-            console.error('Error updating product:', error);
-            setError(error);
-        }
+    const handleEdit = (productId) => {
+        router.push(`/update/${productId}`);
     };
 
-    const handleEditClick = (product) => {
-        setCurrentProduct(product);
-        setIsEditing(true);
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setCurrentProduct({ ...currentProduct, [name]: value });
-    };
-
-    const handleUpdateSubmit = (e) => {
-        e.preventDefault();
-        updateProduct(currentProduct);
-    };
     return (
         <div className='w-screen h-screen bg-white'>
             <div className='px-4'>
@@ -162,9 +132,9 @@ export default function index() {
                                     <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                                         {products.map(product => (
                                             <tr>
-                                                {/* <img src={product.images} style={{height:'25px', width:'25px'}}/> */}
+
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                    <img src={product.images} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
+                                                    <img src={product.images[0]} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
                                                     <th class="px-6 py-4 font-medium text-gray-900">{product.title}</th>
                                                 </div>
                                                 <td class="px-6 py-4">{product.description}</td>
@@ -173,16 +143,18 @@ export default function index() {
 
                                                 <div style={{ display: 'flex', flexDirection: 'row', gap: 25 }}>
                                                     <div className='mt-3 '>
-                                                        <button class="flex  gap-4 px-6 py-4 font-medium bg-green-500 text-white border-green-500 rounded-xl h-5" 
-                                                         
+
+                                                        <button
+                                                            class="flex  gap-4 px-6 py-4 font-medium bg-green-500 text-white border-green-500 rounded-xl h-5"
+                                                            onClick={() => handleEdit(product._id.toString())}
+
                                                         >
-                                                       
                                                             <p style={{ justifyContent: 'center', justifyItems: 'center', marginTop: '-10px' }}>Edit</p>
                                                         </button>
-                                                    </div>
-                                                    <div className='mt-3 '>
-                                                        <button
 
+                                                    </div>
+                                                    <div className='mt-3  '>
+                                                        <button
                                                             onClick={() => deleteProduct(product._id.toString())}
                                                             class="flex  gap-4 px-6 py-4 font-medium bg-red-500 text-white border-red-500 rounded-xl h-5"   >
                                                             <p style={{ justifyContent: 'center', justifyItems: 'center', marginTop: '-10px' }}>Delete</p>

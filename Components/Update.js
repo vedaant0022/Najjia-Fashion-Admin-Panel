@@ -8,8 +8,6 @@ import { redirect } from 'next/navigation';
 function Products() {
     const router = useRouter();
 
-
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
@@ -18,97 +16,15 @@ function Products() {
     const [color, setcolor] = useState('');
     const [size, setsize] = useState('');
     const [gender, setgender] = useState('');
-    const [category, setcategory] = useState([]);
     const [images, setImages] = useState([]);
-    const [imagePreviews, setImagePreviews] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-
-    const Submit = (event) => {
-        event.preventDefault()
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const raw = JSON.stringify({
-            "title": title,
-            "description": description,
-            "Details": Details,
-            "price": price,
-            "brand": brand,
-            "color": color,
-            "size": size,
-            "gender": gender,
-            "category": category,
-            "image": 'https://cdn-icons-png.flaticon.com/512/679/679922.png'
-        });
-
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:8000/products", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                console.log('sdf')
-
-                router.push('/products')
-                console.log(result)
-            })
-            .catch((error) => console.error(error));
-
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('price', price);
-        formData.append('details', Details);
-        formData.append('brand', brand);
-        formData.append('colors', color);
-        formData.append('sizes', size);
-        formData.append('gender', gender);
-        formData.append('category', category);
-        images.forEach((image) => formData.append('images', image));
-
-        try {
-            const res = await axios.post('http://localhost:8000/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log(res.data); // Handle success response
-            alert('Product uploaded successfully!');
-            router.push('/products')
-        } catch (err) {
-            console.error(err); // Handle error
-            alert('Error uploading product.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setImages(files);
-
-        const previews = files.map(file => URL.createObjectURL(file));
-        setImagePreviews(previews);
-    };
-
+    const [category, setcategory] = useState([]);
     
     return (
 
-        <div className='className="flex mx-auto max-w-2xl justify-center bg-white h-screen w-screen '>
-            <form onSubmit={handleSubmit}>
+        <div className='className="flex mx-auto max-w-2xl justify-center '>
+            <form  >
                 {/* Title */}
-                <div className="grid grid-cols-2 items-center my-4 mt-5">
+                <div className="grid grid-cols-2 items-center ">
                     <label className="col-span-1 block text-lg font-medium text-gray-700 mb-3">Title</label>
                     <div className="col-span-2">
                         <input
@@ -149,21 +65,12 @@ function Products() {
                                     <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
                                     <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
                                 </svg>
-                                <input type="file"
-                                    onChange={handleFileChange} multiple
-                                />
-                                {/* Upload */}
+                                Upload
                             </label>
-
+                            {/* <input id="fileInput" type="file" className="hidden" accept="image/*" multiple onChange={uploadImages} /> */}
                         </div>
                     </div>
                 </div>
-                <div className="image-previews">
-                    {imagePreviews.map((preview, index) => (
-                        <img key={index} src={preview} alt={`Preview ${index}`} width="100" />
-                    ))}
-                </div>
-
                 {/* Description Input */}
                 <div className="grid grid-cols-2 items-center my-4">
                     <label className="col-span-1 block text-lg font-medium text-gray-700 mb-3">Description</label>
@@ -272,17 +179,14 @@ function Products() {
                     </div>
                 </div>
                 {/* Submit Button */}
-                <div className="items-center my-4 justify-center">
+                <div className="items-center my-4 justify-center mt-10">
                     <div className="col-span-2 col-start-2">
-                        {/* <button
-                            onSubmit={handleSubmit}
+                        <button
+                             
                             className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
                         >
-                            Save Product
-                        </button> */}
-                        <button 
-                        className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
-                        type="submit" disabled={loading}>{loading ? 'Uploading' : 'Upload'}</button>
+                            Update Product
+                        </button>
                     </div>
                 </div>
 
