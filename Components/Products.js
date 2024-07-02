@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useHref } from 'react-router-dom';
@@ -22,44 +22,7 @@ function Products() {
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
     const [loading, setLoading] = useState(false);
-
-
-    const Submit = (event) => {
-        event.preventDefault()
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const raw = JSON.stringify({
-            "title": title,
-            "description": description,
-            "Details": Details,
-            "price": price,
-            "brand": brand,
-            "color": color,
-            "size": size,
-            "gender": gender,
-            "category": category,
-            "image": 'https://cdn-icons-png.flaticon.com/512/679/679922.png'
-        });
-
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:8000/products", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                console.log('sdf')
-
-                router.push('/products')
-                console.log(result)
-            })
-            .catch((error) => console.error(error));
-
-    };
+    const [listcategory, setlistcategory] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -88,7 +51,9 @@ function Products() {
             router.push('/products')
         } catch (err) {
             console.error(err); // Handle error
-            alert('Error uploading product.');
+            console.log(err)
+            // alert('Error uploading product.');
+            router.push('/products')
         } finally {
             setLoading(false);
         }
@@ -102,7 +67,38 @@ function Products() {
         setImagePreviews(previews);
     };
 
-    
+    useEffect(() => {
+
+        const fetchcategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/categories');
+                console.log(response.status);
+                console.log(response);
+
+                if (!response.status == 200) {
+                    throw new Error('Network response was not ok');
+
+                }
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError('Expected JSON response from server');
+                }
+
+                const data = await response.data;
+                console.log(data);
+                setlistcategory(data);
+            }
+            catch (error) {
+                console.error('Error fetching products:', error);
+                setError(error);
+            }
+        };
+
+        fetchcategories();
+
+    }, [listcategory]);
+
+
     return (
 
         <div className='className="flex mx-auto max-w-2xl justify-center bg-white h-screen w-screen '>
@@ -122,6 +118,25 @@ function Products() {
                     </div>
                 </div>
                 {/* Options */}
+                {/* <div>
+                    <label htmlFor="category" className="block text-lg font-medium text-gray-900">
+                        Select Category
+                    </label>
+                    <select
+                        className="mt-1.5 p-3 w-full rounded-md border border-gray-300 text-gray-700"
+                        value={category}
+                        onChange={(ev) => setcategory(ev.target.value)}
+                    >
+                        
+                        <option value="0">No category selected</option>
+                        <option value="Tshirts">Tshirts</option>
+                        <option value="Jeans">Jeans</option>
+                        <option value="Wallets">Wallets</option>
+                        <option value="Shoes">Shoes</option>
+                        
+                        
+                    </select>
+                </div> */}
                 <div>
                     <label htmlFor="category" className="block text-lg font-medium text-gray-900">
                         Select Category
@@ -132,11 +147,11 @@ function Products() {
                         onChange={(ev) => setcategory(ev.target.value)}
                     >
                         <option value="0">No category selected</option>
-                        <option value="Tshirts">Tshirts</option>
-                        <option value="Jeans">Jeans</option>
-                        <option value="Wallets">Wallets</option>
-                        <option value="Shoes">Shoes</option>
-
+                        {listcategory.map(option => (
+                            <option key={option._id} value={option.name}>
+                                {option.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 {/* Upload Image */}
@@ -280,9 +295,9 @@ function Products() {
                         >
                             Save Product
                         </button> */}
-                        <button 
-                        className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
-                        type="submit" disabled={loading}>{loading ? 'Uploading' : 'Upload'}</button>
+                        <button
+                            className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
+                            type="submit" disabled={loading}>{loading ? 'Uploading' : 'Upload'}</button>
                     </div>
                 </div>
 

@@ -53,12 +53,12 @@ export default function Header() {
                                     </li>
 
                                     <li>
-                                        {/* <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Categories </a>  */}
-                                         <Link
-                                            className={pathname === '/highlights' ? active : inActive}
-                                            href="/highlights"
+                                         {/* <a className="text-gray-500 transition hover:text-gray-500/75" href="#"> Categories </a>   */}
+                                          <Link
+                                            className={pathname === '/Category' ? active : inActive}
+                                            href="/categories"
                                         >
-                                            Highlights
+                                            Categories
                                         </Link>
 
                                     </li>

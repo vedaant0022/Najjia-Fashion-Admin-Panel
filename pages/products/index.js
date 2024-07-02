@@ -11,6 +11,7 @@ export default function index() {
 
 
     const [products, setProducts] = useState([]);
+    const [category, setcategory] = useState([]);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProduct, setCurrentProduct] = useState(null);
@@ -43,8 +44,34 @@ export default function index() {
             }
         };
 
+        const fetchcategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/categories');
+                console.log(response.status);
+                console.log(response);
+
+                if (!response.status == 200) {
+                    throw new Error('Network response was not ok');
+
+                }
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new TypeError('Expected JSON response from server');
+                }
+
+                const data = await response.data;
+                console.log(data);
+                setcategory(data);
+            }
+            catch (error) {
+                console.error('Error fetching products:', error);
+                setError(error);
+            }
+        };
+
+        fetchcategories
         fetchProducts();
-    }, [products]);
+    }, [category,products]);
 
     if (error) {
         return <div className='w-screen h-screen bg-white'>Error: {error.message}</div>;
