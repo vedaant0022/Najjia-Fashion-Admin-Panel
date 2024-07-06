@@ -41,7 +41,7 @@ function Products() {
         images.forEach((image) => formData.append('images', image));
 
         try {
-            const res = await axios.post('http://localhost:8000/upload', formData, {
+            const res = await axios.post('https://najjia-fashion-admin-panel-backend.vercel.app/upload2', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -71,7 +71,7 @@ function Products() {
 
         const fetchcategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/categories');
+                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories');
                 console.log(response.status);
                 console.log(response);
 
@@ -233,8 +233,8 @@ function Products() {
                             onChange={(ev) => setgender(ev.target.value)}
                         >
                             <option value="0">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
 
                         </select>
                     </div>

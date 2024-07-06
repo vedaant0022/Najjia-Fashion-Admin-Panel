@@ -19,7 +19,7 @@
 //   const router = useRouter();
 
 //   const fetchCategories = () => {
-//     axios.get('http://localhost:8000/categories')
+//     axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories')
 //       .then(result => setCategories(result.data))
 //       .catch(error => console.error("Error fetching categories", error));
 //   };
@@ -40,7 +40,7 @@
 
 //   const deleteCategory = async (id) => {
 //     try {
-//       const response = await axios.delete(`http://localhost:8000/categories/${id}`);
+//       const response = await axios.delete(`https://najjia-fashion-admin-panel-backend.vercel.app/categories/${id}`);
 //       if (response.status === 200) {
 //         toast.success("Category deleted successfully");
 //         fetchCategories();
@@ -186,7 +186,7 @@ export default function Categories() {
 
   const fetchCategories = () => {
     axios
-      .get("http://localhost:8000/categories")
+      .get("https://najjia-fashion-admin-panel-backend.vercel.app/categories")
       .then((result) => setCategories(result.data))
       .catch((error) => console.error("Error fetching categories", error));
   };
@@ -203,7 +203,7 @@ export default function Categories() {
 
   const deleteCategory = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/categories/${id}`);
+      const response = await axios.delete(`https://najjia-fashion-admin-panel-backend.vercel.app/categories/${id}`);
       if (response.status === 200) {
         toast.success("Category deleted successfully");
         fetchCategories();
@@ -218,7 +218,7 @@ export default function Categories() {
   const editCategory = async (category) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/categories/${category._id}`,
+        `https://najjia-fashion-admin-panel-backend.vercel.app/categories/${category._id}`,
         category
       );
       if (response.status === 200) {

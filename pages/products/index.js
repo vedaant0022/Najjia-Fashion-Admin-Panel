@@ -21,7 +21,7 @@ export default function index() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/products');
+                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/products');
                 console.log(response.status);
                 console.log(response);
 
@@ -46,7 +46,7 @@ export default function index() {
 
         const fetchcategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/categories');
+                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories');
                 console.log(response.status);
                 console.log(response);
 
@@ -79,7 +79,7 @@ export default function index() {
 
     const deleteProduct = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8000/products/${id}`, {
+            const response = await fetch(`https://najjia-fashion-admin-panel-backend.vercel.app/products/${id}`, {
                 method: 'DELETE',
             });
 
