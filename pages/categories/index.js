@@ -19,7 +19,7 @@
 //   const router = useRouter();
 
 //   const fetchCategories = () => {
-//     axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories')
+//     axios.get('http://localhost:8000/categories')
 //       .then(result => setCategories(result.data))
 //       .catch(error => console.error("Error fetching categories", error));
 //   };
@@ -40,7 +40,7 @@
 
 //   const deleteCategory = async (id) => {
 //     try {
-//       const response = await axios.delete(`https://najjia-fashion-admin-panel-backend.vercel.app/categories/${id}`);
+//       const response = await axios.delete(`http://localhost:8000/categories/${id}`);
 //       if (response.status === 200) {
 //         toast.success("Category deleted successfully");
 //         fetchCategories();
@@ -180,13 +180,13 @@ export default function Categories() {
 
   useEffect(() => {
     fetchCategories();
-  }, [categories]);
+  }, []);
 
   const router = useRouter();
 
   const fetchCategories = () => {
     axios
-      .get("https://najjia-fashion-admin-panel-backend.vercel.app/categories")
+      .get("http://localhost:8000/categories")
       .then((result) => setCategories(result.data))
       .catch((error) => console.error("Error fetching categories", error));
   };
@@ -203,7 +203,7 @@ export default function Categories() {
 
   const deleteCategory = async (id) => {
     try {
-      const response = await axios.delete(`https://najjia-fashion-admin-panel-backend.vercel.app/categories/${id}`);
+      const response = await axios.delete(`http://localhost:8000/categories/${id}`);
       if (response.status === 200) {
         toast.success("Category deleted successfully");
         fetchCategories();
@@ -218,7 +218,7 @@ export default function Categories() {
   const editCategory = async (category) => {
     try {
       const response = await axios.put(
-        `https://najjia-fashion-admin-panel-backend.vercel.app/categories/${category._id}`,
+        `http://localhost:8000/categories/${category._id}`,
         category
       );
       if (response.status === 200) {

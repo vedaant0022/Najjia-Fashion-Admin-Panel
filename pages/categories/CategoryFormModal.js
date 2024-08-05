@@ -39,7 +39,7 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
       formData.append('name', name);
       formData.append('image', imageFile);
 
-      const response = await axios.post('https://najjia-fashion-admin-panel-backend.vercel.app/categories', formData, {
+      const response = await axios.post('http://localhost:8000/categories', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -70,7 +70,7 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
       formData.append('name', name);
       formData.append('image', imageFile); // Assuming imageFile is the File object from input
 
-      const response = await axios.put(`https://najjia-fashion-admin-panel-backend.vercel.app/${_id}`, formData, {
+      const response = await axios.put(`http://localhost:8000/${_id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

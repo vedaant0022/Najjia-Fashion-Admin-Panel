@@ -36,7 +36,7 @@ const EditProduct = () => {
 
     useEffect(() => {
         if (id) {
-            axios.get(`https://najjia-fashion-admin-panel-backend.vercel.app/products/${id}`)
+            axios.get(`http://localhost:8000/products/${id}`)
                 .then(response => {
                     setProduct(response.data);
                     setImagePreviews(response.data.images);
@@ -49,7 +49,7 @@ const EditProduct = () => {
 
         const fetchcategories = async () => {
             try {
-                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories');
+                const response = await axios.get('http://localhost:8000/categories');
                 console.log(response.status);
                 console.log(response);
 
@@ -80,7 +80,7 @@ const EditProduct = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put(`https://najjia-fashion-admin-panel-backend.vercel.app/products/${id}`, product);
+            const response = await axios.put(`http://localhost:8000/products/${id}`, product);
             if (response.status === 200) {
                 alert("Product Updated Successfully");
                 router.push('/products');

@@ -21,7 +21,7 @@ export default function index() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/products');
+                const response = await axios.get('http://localhost:8000/products');
                 console.log(response.status);
                 console.log(response);
 
@@ -46,7 +46,7 @@ export default function index() {
 
         const fetchcategories = async () => {
             try {
-                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories');
+                const response = await axios.get('http://localhost:8000/categories');
                 console.log(response.status);
                 console.log(response);
 
@@ -71,7 +71,7 @@ export default function index() {
 
         fetchcategories
         fetchProducts();
-    }, [category,products]);
+    }, []);
 
     if (error) {
         return <div className='w-screen h-screen bg-white'>Error: {error.message}</div>;
@@ -79,7 +79,7 @@ export default function index() {
 
     const deleteProduct = async (id) => {
         try {
-            const response = await fetch(`https://najjia-fashion-admin-panel-backend.vercel.app/products/${id}`, {
+            const response = await fetch(`http://localhost:8000/products/${id}`, {
                 method: 'DELETE',
             });
 
@@ -150,7 +150,7 @@ export default function index() {
                                         <tr>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Description</th>
-                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th>
+                                            {/* <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th> */}
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Category</th>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
                                         </tr>
@@ -165,7 +165,7 @@ export default function index() {
                                                     <th class="px-6 py-4 font-medium text-gray-900">{product.title}</th>
                                                 </div>
                                                 <td class="px-6 py-4">{product.description}</td>
-                                                <td class="px-6 py-4">{product.price}</td>
+                                                {/* <td class="px-6 py-4">{product.price}</td> */}
                                                 <td class="px-6 py-4">{product.category}</td>
 
                                                 <div style={{ display: 'flex', flexDirection: 'row', gap: 25 }}>
