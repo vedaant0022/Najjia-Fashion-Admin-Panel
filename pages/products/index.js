@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Router, { useRouter } from 'next/router';
+import Image from 'next/image';
 
 
 export default function index() {
@@ -161,7 +162,7 @@ export default function index() {
                                             <tr>
 
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                    <img src={product.images[0]} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
+                                                    <Image src={product.images[0]} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
                                                     <th class="px-6 py-4 font-medium text-gray-900">{product.title}</th>
                                                 </div>
                                                 <td class="px-6 py-4">{product.description}</td>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useHref } from 'react-router-dom';
 import { redirect } from 'next/navigation';
+import Image from 'next/image';
 
 
 function Products() {
@@ -175,7 +176,7 @@ function Products() {
                 </div>
                 <div className="image-previews">
                     {imagePreviews.map((preview, index) => (
-                        <img key={index} src={preview} alt={`Preview ${index}`} width="100" />
+                        <Image key={index} src={preview} alt={`Preview ${index}`} width="100" />
                     ))}
                 </div>
 

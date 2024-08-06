@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Image from 'next/image';
 
 const EditProduct = () => {
     const router = useRouter();
@@ -162,7 +163,7 @@ const EditProduct = () => {
                     </div>
                     <div className="image-previews mt-4">
                         {imagePreviews.map((preview, index) => (
-                            <img key={index} src={preview} alt={`Preview ${index}`} width="100" />
+                            <Image key={index} src={preview} alt={`Preview ${index}`} width="100" />
                         ))}
                     </div>
                     {/* Description Input */}
