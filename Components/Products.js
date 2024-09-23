@@ -42,7 +42,7 @@ function Products() {
         images.forEach((image) => formData.append('images', image));
 
         try {
-            const res = await axios.post('http://localhost:8000/upload2', formData, {
+            const res = await axios.post('https://najjia-fashion-admin-panel-backend.vercel.app/upload2', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -72,7 +72,7 @@ function Products() {
 
         const fetchcategories = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/categories');
+                const response = await axios.get('https://najjia-fashion-admin-panel-backend.vercel.app/categories');
                 console.log(response.status);
                 console.log(response);
 
